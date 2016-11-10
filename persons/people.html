@@ -1,0 +1,54 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../iron-ajax/iron-ajax.html">
+<link rel="import" href="../../iron-list/iron-list.html">
+
+<dom-module id="people-list">
+	<template>
+    <style>
+      :host {
+				display: block;
+				position: relative;
+			}
+
+			iron-list {
+				height: 100vh;
+				width: 100%;
+			}
+
+			#items {
+				overflow: auto;
+				height: 100vh !important;
+			}
+			
+			.item {
+				position: relative !important;
+				display: inline-block;
+				width: 20% !important;
+				transform: none !important;
+				overflow: hidden;
+			}
+			figure {
+				margin:0;
+				display: block;
+			}
+		</style>
+		<iron-ajax url="people.json" last-response="{{item}}" auto></iron-ajax>
+		<iron-list items="[[item.persons]]" as="hero">
+			<template>
+				<div class="item">
+				<figure>
+					<img src=[[hero.avatar]] alt="">
+				</figure>
+				<figcaption><p>[[hero.firstName]] [[hero.lastName]]</p></figcaption>
+				</div>
+			</template>
+		</iron-list>
+	</template>
+</dom-module>
+<script>
+		Polymer({
+			is: 'people-list'
+		});
+
+</script>
+
