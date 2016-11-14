@@ -9,59 +9,46 @@
         display: block;
         position: relative;
       }
-
-      iron-list {
-        height: 100vh;
-        width: 100%;
-      }
-
-      #items {
-        overflow: auto;
-        height: 100vh !important;
-      }
-
-      .item {
-        position: relative !important;
-        display: inline-block;
-        width: 20% !important;
-        transform: none !important;
-        overflow: hidden;
-      }
-      figure {
-        margin:0;
-        display: block;
-      }
     </style>
-          <div class="item">
-          <figure>
-            <img src="" alt="">
-          </figure>
-          <figcaption><p>{{data.firstName}}</p></figcaption>
-        </div>
+    <div class="item">
+      <figure>
+        <img src="" alt="">
+      </figure>
+      <figcaption><p>{{exampleElementVar.hello}}</p></figcaption>
+    </div>
   </template>
 </dom-module>
 <script>
 (function() {
-  var data = {firstName: "John"}
 Polymer({
   is: 'congress-member',
+  created: function() {
+    key = this.getAttribute('key');
+    data = {'hello': 'goodbye'}
+  },
   properties: {
-    key: String
+    key: String,
+    data: Object,
+    exampleElementVar: {
+      value: function() {
+        var data = {'hello': 'bye'}
+        return data
+    }
   },
   ready: function() {
     xhr = new XMLHttpRequest();
     xhr.addEventListener("load", function() {//data = JSON.parse(this.responseText); 
-      this.data = data
+      data['lastName'] = "Perry"
+      return data
     })
     xhr.open("GET", 'https://api.propublica.org/congress/v1/114/senate/members.json');
     xhr.setRequestHeader("X-API-Key", process.env.congress);
     xhr.send();
-  },
-  created: function() {
-    key = this.getAttribute('key');
+    return data;
+    }
   },
   observers: [
-    'logFor(data)',
+    'logFor(exampleElementVar.hello)',
   ],
   logFor: function(thing) {
     console.log(thing)
