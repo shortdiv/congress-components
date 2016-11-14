@@ -45,21 +45,29 @@
   var data = {firstName: "John"}
 Polymer({
   is: 'congress-member',
-	properties: {
+  properties: {
     key: String
   },
   ready: function() {
     xhr = new XMLHttpRequest();
     xhr.addEventListener("load", function() {//data = JSON.parse(this.responseText); 
-      this.data = data})
+      this.data = data
+    })
     xhr.open("GET", 'https://api.propublica.org/congress/v1/114/senate/members.json');
     xhr.setRequestHeader("X-API-Key", process.env.congress);
     xhr.send();
   },
-	created: function() {
-		key = this.getAttribute('key');
-	}
+  created: function() {
+    key = this.getAttribute('key');
+  },
+  observers: [
+    'logFor(data)',
+  ],
+  logFor: function(thing) {
+    console.log(thing)
+  }
 });
+Polymer.log = console.log.bind(console);
 })();
 </script>
 
