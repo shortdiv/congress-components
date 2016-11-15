@@ -1,6 +1,4 @@
 <link rel="import" href="../../polymer/polymer.html">
-<link rel="import" href="../../iron-ajax/iron-ajax.html">
-<link rel="import" href="../../iron-list/iron-list.html">
 
 <dom-module id="congress-member">
   <template>
@@ -14,46 +12,42 @@
       <figure>
         <img src="" alt="">
       </figure>
-      <figcaption><p>{{exampleElementVar.hello}}</p></figcaption>
+      <figcaption><p>{{data}}</p></figcaption>
     </div>
   </template>
 </dom-module>
 <script>
 (function() {
-Polymer({
-  is: 'congress-member',
-  created: function() {
-    key = this.getAttribute('key');
-    data = {'hello': 'goodbye'}
-  },
-  properties: {
-    key: String,
-    data: Object,
-    exampleElementVar: {
-      value: function() {
-        var data = {'hello': 'bye'}
-        return data
+  Polymer({
+    is: 'congress-member',
+    properties: {
+      key: String,
+    },
+    created: function() {
+      key = this.getAttribute('key');
+    },
+    attached: function() {
+      this.data = "yo!"
+      xhr = new XMLHttpRequest();
+      xhr.open("GET", 'https://api.propublica.org/congress/v1/114/senate/members.json', false);
+      xhr.setRequestHeader("X-API-Key", process.env.congress);
+      xhr.send();
+      if(xhr.status === 200) {
+        data = JSON.parse(xhr.responseText);
+        this.data = data.results[0].members[0].first_name;
+      }
+      return this.data;
+    },
+    ready: function() {
+      var thing;
+    },
+    observers: [
+      'logFor(data)',
+    ],
+    logFor: function(thing) {
+      console.log(thing)
     }
-  },
-  ready: function() {
-    xhr = new XMLHttpRequest();
-    xhr.addEventListener("load", function() {//data = JSON.parse(this.responseText); 
-      data['lastName'] = "Perry"
-      return data
-    })
-    xhr.open("GET", 'https://api.propublica.org/congress/v1/114/senate/members.json');
-    xhr.setRequestHeader("X-API-Key", process.env.congress);
-    xhr.send();
-    return data;
-    }
-  },
-  observers: [
-    'logFor(exampleElementVar.hello)',
-  ],
-  logFor: function(thing) {
-    console.log(thing)
-  }
-});
+  });
 Polymer.log = console.log.bind(console);
 })();
 </script>
