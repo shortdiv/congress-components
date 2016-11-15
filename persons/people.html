@@ -27,14 +27,13 @@
       key = this.getAttribute('key');
     },
     attached: function() {
-      this.data = "yo!"
       xhr = new XMLHttpRequest();
-      xhr.open("GET", 'https://api.propublica.org/congress/v1/114/senate/members.json', false);
+      xhr.open("GET", 'https://api.propublica.org/congress/v1/members/' + key + '.json', false);
       xhr.setRequestHeader("X-API-Key", process.env.congress);
       xhr.send();
       if(xhr.status === 200) {
         data = JSON.parse(xhr.responseText);
-        this.data = data.results[0].members[0].first_name;
+        this.data = data.results[0].first_name + " " + data.results[0].middle_name + data.results[0].last_name;
       }
       return this.data;
     },
