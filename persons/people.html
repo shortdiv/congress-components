@@ -26,7 +26,7 @@
     <div class="item">
       <figure>
         <img src="{{image}}" alt="">
-        <figcaption><p>{{data}}</p></figcaption>
+        <figcaption><p>{{name}}</p></figcaption>
       </figure>
       <section class="rolecard">
         <h3>Roles:</h3>
@@ -54,11 +54,12 @@
     is: 'congress-member',
     properties: {
       key: String,
+      data: Object
     },
     created: function() {
       key = this.getAttribute('key');
     },
-    attached: function() {
+    ready: function() {
       this.image = 'https://www.congress.gov/img/member/' + key.toLowerCase() + '.jpg';
       xhr = new XMLHttpRequest();
       xhr.open("GET", 'https://api.propublica.org/congress/v1/members/' + key + '.json', false);
@@ -67,7 +68,7 @@
       if(xhr.status === 200) {
         data = JSON.parse(xhr.responseText);
       }
-      this.data = data.results[0].first_name + " " + data.results[0].middle_name + data.results[0].last_name;
+      this.name = data.results[0].first_name + " " + data.results[0].middle_name + data.results[0].last_name;
       this.roles = data.results[0]
       roles = this.roles;
       this.social = function() {
