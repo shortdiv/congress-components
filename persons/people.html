@@ -6,13 +6,45 @@
       :host {
         display: block;
         position: relative;
+        border: 2px solid #889daa;
+      }
+
+      figure {
+        margin: 0;
+        display: inline-block;
+        vertical-align: top;
+      }
+
+      figcaption {
+        display: block;
+      }
+
+      .rolecard {
+        display: inline-block;
       }
     </style>
     <div class="item">
       <figure>
-        <img src="" alt="">
+        <img src="{{image}}" alt="">
+        <figcaption><p>{{data}}</p></figcaption>
       </figure>
-      <figcaption><p>{{data}}</p></figcaption>
+      <section class="rolecard">
+        <h3>Roles:</h3>
+        <template is="dom-repeat" items={{roles.roles}} as="role">
+          <div class="item">
+            <p>{{role.title}}</p>
+            <p>{{role.chamber}}</p>
+            <p>{{role.state}}</p>
+            <p>{{role.party}}</p>
+            <p>{{role.start_date}} - {{role.end_date}}</p>
+          </div>
+        </template>
+        <template is="dom-repeat" items={{social}}>
+          <div>
+            <p>{{item}}</p>
+          </div>
+        </template>
+      </section>
     </div>
   </template>
 </dom-module>
@@ -27,18 +59,29 @@
       key = this.getAttribute('key');
     },
     attached: function() {
+      this.image = 'https://www.congress.gov/img/member/' + key.toLowerCase() + '.jpg';
       xhr = new XMLHttpRequest();
       xhr.open("GET", 'https://api.propublica.org/congress/v1/members/' + key + '.json', false);
       xhr.setRequestHeader("X-API-Key", process.env.congress);
       xhr.send();
       if(xhr.status === 200) {
         data = JSON.parse(xhr.responseText);
-        this.data = data.results[0].first_name + " " + data.results[0].middle_name + data.results[0].last_name;
       }
-      return this.data;
-    },
-    ready: function() {
-      var thing;
+      this.data = data.results[0].first_name + " " + data.results[0].middle_name + data.results[0].last_name;
+      this.roles = data.results[0]
+      roles = this.roles;
+      this.social = function() {
+        var role = Object.keys(roles);
+        var arr = [],
+            given = ["facebook_account", "twitter_account", "youtube_account"];
+        for(var i = 0; i < role.length; i++){
+          var word = role[i];
+          if(given.indexOf(word) >=0){
+            arr.push(roles[role[i]])
+          }
+        }
+        return arr;
+      }()
     },
     observers: [
       'logFor(data)',
