@@ -1,4 +1,5 @@
 <link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../iron-ajax/iron-ajax.html">
 
 <dom-module id="congress-member">
   <template>
@@ -23,66 +24,45 @@
         display: inline-block;
       }
     </style>
+    <iron-ajax
+      id = "ajax"
+      url=""
+      handle-as"json"
+      on-response="responseHandler"
+      debounce-duration="300">
+    </iron-ajax>
+    <template is="dom-repeat" items={{data}}>
     <div class="item">
       <figure>
         <img src="{{image}}" alt="">
-        <figcaption><p>{{name}}</p></figcaption>
+        <figcaption><p>{{item.first_name}}</p></figcaption>
       </figure>
-      <section class="rolecard">
-        <h3>Roles:</h3>
-        <template is="dom-repeat" items={{roles.roles}} as="role">
-          <div class="item">
-            <p>{{role.title}}</p>
-            <p>{{role.chamber}}</p>
-            <p>{{role.state}}</p>
-            <p>{{role.party}}</p>
-            <p>{{role.start_date}} - {{role.end_date}}</p>
-          </div>
-        </template>
-        <template is="dom-repeat" items={{social}}>
-          <div>
-            <p>{{item}}</p>
-          </div>
-        </template>
-      </section>
     </div>
+    </template>
   </template>
 </dom-module>
 <script>
 (function() {
   Polymer({
     is: 'congress-member',
+    ready: function() {
+      this._setAjax();
+    },
+    _setAjax: function() {
+      this.$.ajax.url = "https://api.propublica.org/congress/v1/members/"+ this.key + ".json";
+      this.$.ajax.headers = {"X-API-KEY": process.env.congress};
+      this.$.ajax.sync = true;
+      this.$.ajax.generateRequest();
+    },
+    responseHandler: function(request) {
+      data = JSON.parse(request.detail.response).results;
+      return this.data = data;
+    },
     properties: {
       key: String,
-      data: Object
     },
     created: function() {
       key = this.getAttribute('key');
-    },
-    ready: function() {
-      this.image = 'https://www.congress.gov/img/member/' + key.toLowerCase() + '.jpg';
-      xhr = new XMLHttpRequest();
-      xhr.open("GET", 'https://api.propublica.org/congress/v1/members/' + key + '.json', false);
-      xhr.setRequestHeader("X-API-Key", process.env.congress);
-      xhr.send();
-      if(xhr.status === 200) {
-        data = JSON.parse(xhr.responseText);
-      }
-      this.name = data.results[0].first_name + " " + data.results[0].middle_name + data.results[0].last_name;
-      this.roles = data.results[0]
-      roles = this.roles;
-      this.social = function() {
-        var role = Object.keys(roles);
-        var arr = [],
-            given = ["facebook_account", "twitter_account", "youtube_account"];
-        for(var i = 0; i < role.length; i++){
-          var word = role[i];
-          if(given.indexOf(word) >=0){
-            arr.push(roles[role[i]])
-          }
-        }
-        return arr;
-      }()
     },
     observers: [
       'logFor(data)',
