@@ -35,8 +35,18 @@
     <div class="item">
       <figure>
         <img src="{{image}}" alt="">
-        <figcaption><p>{{item.first_name}}</p></figcaption>
+        <figcaption><p>{{item.first_name}} {{item.last_name}}</p></figcaption>
       </figure>
+      <section>
+        <iron-list items="{{item.roles}}" as="role">
+          <p>{{item.roles}}</p>
+          <p>{{role.title}}</p>
+          <p>{{role.chamber}}</p>
+          <p>{{role.state}}</p>
+          <p>{{role.party}}</p>
+          <p>{{role.start_date}} - {{role.end_date}}</p>
+        </iron-list>
+      </section>
     </div>
     </template>
   </template>
@@ -47,6 +57,7 @@
     is: 'congress-member',
     ready: function() {
       this._setAjax();
+      this.image = "https://www.congress.gov/img/member/" + key.toLowerCase() + ".jpg";
     },
     _setAjax: function() {
       this.$.ajax.url = "https://api.propublica.org/congress/v1/members/"+ this.key + ".json";
