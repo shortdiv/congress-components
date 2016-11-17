@@ -1,5 +1,6 @@
 <link rel="import" href="../../polymer/polymer.html">
 <link rel="import" href="../../iron-ajax/iron-ajax.html">
+<link rel="import" href="../../iron-list/iron-list.html">
 
 <dom-module id="congress-member">
   <template>
@@ -39,12 +40,15 @@
       </figure>
       <section>
         <iron-list items="{{item.roles}}" as="role">
-          <p>{{item.roles}}</p>
-          <p>{{role.title}}</p>
-          <p>{{role.chamber}}</p>
-          <p>{{role.state}}</p>
-          <p>{{role.party}}</p>
-          <p>{{role.start_date}} - {{role.end_date}}</p>
+          <template>
+            <div class="role">
+              <p>{{role.title}}</p>
+              <p>{{role.chamber}}</p>
+              <p>{{role.state}}</p>
+              <p>{{role.party}}</p>
+              <p>{{role.start_date}} - {{role.end_date}}</p>
+          </div>
+          </template>
         </iron-list>
       </section>
     </div>
