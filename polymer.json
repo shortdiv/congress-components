@@ -1,0 +1,14 @@
+{
+  "entrypoint": "index.html",
+  "shell": "./persons/people.html",
+  "fragments": [
+    "./persons/person.html"
+  ],
+  "sources": [
+    "persons/*",
+    "bower.json"
+  ],
+  "includeDependencies": [
+    "./bower_components/webcomponentsjs/webcomponents-lite.min.js"
+  ]
+}

@@ -1,92 +1,68 @@
-<link rel="import" href="../../polymer/polymer.html">
-<link rel="import" href="../../iron-ajax/iron-ajax.html">
-<link rel="import" href="../../iron-list/iron-list.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-list/iron-list.html">
+<link rel="import" href="person.html">
 
-<dom-module id="congress-member">
+<dom-module id="congress-members">
+  <style>
+    :host {
+      display: block;
+      position: relative;
+    }
+
+    figure {
+      margin: 0;
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    figcaption {
+      display: block;
+    }
+
+    .rolecard {
+      display: inline-block;
+    }
+  </style>
   <template>
-    <style>
-      :host {
-        display: block;
-        position: relative;
-        border: 2px solid #889daa;
-      }
-
-      figure {
-        margin: 0;
-        display: inline-block;
-        vertical-align: top;
-      }
-
-      figcaption {
-        display: block;
-      }
-
-      .rolecard {
-        display: inline-block;
-      }
-    </style>
-    <iron-ajax
-      id = "ajax"
-      url=""
-      handle-as"json"
-      on-response="responseHandler"
-      debounce-duration="300">
-    </iron-ajax>
-    <template is="dom-repeat" items={{data}}>
-    <div class="item">
-      <figure>
-        <img src="{{image}}" alt="">
-        <figcaption><p>{{item.first_name}} {{item.last_name}}</p></figcaption>
-      </figure>
-      <section>
-        <iron-list items="{{item.roles}}" as="role">
-          <template>
-            <div class="role">
-              <p>{{role.title}}</p>
-              <p>{{role.chamber}}</p>
-              <p>{{role.state}}</p>
-              <p>{{role.party}}</p>
-              <p>{{role.start_date}} - {{role.end_date}}</p>
+      <paper-header-panel>
+        <paper-toolbar>
+          <paper-item>Congress Members</paper-item>
+          <div>
+            <iron-ajax auto
+              url='https://api.propublica.org/congress/v1/114/senate/members.json'
+              method='GET'
+              on-response='handleResponse'
+              headers='{{headers}}'>
+            </iron-ajax>
+            <template is="dom-repeat" items={{members}}>
+              <congress-member key="{{item.id}}"></congress-member>
+            </template>
           </div>
-          </template>
-        </iron-list>
-      </section>
-    </div>
-    </template>
+        </paper-toolbar>
+      </paper-header-panel>
+    </paper-drawer-panel>
   </template>
 </dom-module>
 <script>
-(function() {
-  Polymer({
-    is: 'congress-member',
-    ready: function() {
-      this._setAjax();
-      this.image = "https://www.congress.gov/img/member/" + key.toLowerCase() + ".jpg";
+Polymer({
+  is: "congress-members",
+  properties: {
+    headers: {
+      type: Object,
+      value: {'X-API-Key': process.env.CONGRESS}
     },
-    _setAjax: function() {
-      this.$.ajax.url = "https://api.propublica.org/congress/v1/members/"+ this.key + ".json";
-      this.$.ajax.headers = {"X-API-KEY": process.env.congress};
-      this.$.ajax.sync = true;
-      this.$.ajax.generateRequest();
-    },
-    responseHandler: function(request) {
-      data = JSON.parse(request.detail.response).results;
-      return this.data = data;
-    },
-    properties: {
-      key: String,
-    },
-    created: function() {
-      key = this.getAttribute('key');
-    },
-    observers: [
-      'logFor(data)',
-    ],
-    logFor: function(thing) {
-      console.log(thing)
+    congressmembers: {
+      type: Array,
+      value: []
     }
-  });
-Polymer.log = console.log.bind(console);
-})();
+  },
+  handleResponse: function(request) {
+    data = (request.detail.response).results;
+    members = data[0].members;
+    this.members = members;
+    return members;
+	}
+})
 </script>
 

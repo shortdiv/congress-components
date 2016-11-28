@@ -1,0 +1,50 @@
+<link href="../bower_components/polymer/polymer.html" rel="import">
+<link href="../bower_components/paper-item/paper-item.html" rel="import">
+<link href="../bower_components/paper-material/paper-material.html" rel="import">
+
+<dom-module id="congress-member">
+	<style>
+		paper-material {
+			background-color: #fff;
+			max-width: 640px;
+			width: 90%;
+			margin: 25px auto;
+			position: relative;
+		}
+	</style>
+  <template>
+    <paper-material elevation="1">
+      <paper-item><span>{{key}}</span></paper-item>
+      <paper-item>{{lastName}}</paper-item>
+      <paper-item>{{partyAffiliation}}</paper-item>
+    </paper-material>
+  </template>
+</dom-module>
+<script>
+Polymer({
+  is: 'congress-member',
+  properties: {
+    key: {
+      type: String,
+      value: ''
+    },
+    lastName: {
+      type: String,
+      value: ''
+    },
+    key: {
+      type: String,
+      value: ''
+    },
+    partyAffiliation: {
+      type: String,
+      value: ''
+    }
+  },
+  ready: function() {
+  },
+  created: function() {
+    key = this.getAttribute('key');
+  },
+})
+</script>
