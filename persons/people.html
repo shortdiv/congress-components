@@ -36,7 +36,7 @@
               headers='{{headers}}'>
             </iron-ajax>
             <template is="dom-repeat" items={{congressmembers}}>
-              <congress-member key="{{item.id}}">{{item.id}}</congress-member>
+              <congress-member data="{{item}}"></congress-member>
             </template>
           </div>
         </paper-toolbar>

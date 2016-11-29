@@ -13,18 +13,20 @@
 		}
 	</style>
   <template>
-    <paper-material elevation="1">
-      <paper-item><span>{{key}}</span></paper-item>
-      <paper-item>{{lastName}}</paper-item>
-      <paper-item>{{partyAffiliation}}</paper-item>
-    </paper-material>
+    <div id="congressmember">
+      <paper-material elevation="1">
+        <paper-item>Name: <span> {{data.first_name}} {{data.last_name}}</span></paper-item>
+        <paper-item>Seniority: <span>{{data.seniority}}</span></paper-item>
+        <paper-item>Party Affiliation: <span>{{data.party}}</span></paper-item>
+      </paper-material>
+    </div>
   </template>
 </dom-module>
 <script>
 Polymer({
   is: 'congress-member',
   properties: {
-    key: {
+    firstName: {
       type: String,
       value: ''
     },
@@ -32,19 +34,16 @@ Polymer({
       type: String,
       value: ''
     },
-    key: {
+    seniority: {
       type: String,
       value: ''
     },
-    partyAffiliation: {
+    party: {
       type: String,
       value: ''
     }
   },
-  ready: function() {
-  },
-  created: function() {
-    key = this.getAttribute('key');
-  },
+  attached: function() {
+  }
 })
 </script>
