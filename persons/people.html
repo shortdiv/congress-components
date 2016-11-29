@@ -1,6 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="../bower_components/iron-list/iron-list.html">
 <link rel="import" href="person.html">
 
 <dom-module id="congress-members">
@@ -30,13 +29,14 @@
           <paper-item>Congress Members</paper-item>
           <div>
             <iron-ajax auto
+              id="congressmembers"
               url='https://api.propublica.org/congress/v1/114/senate/members.json'
               method='GET'
               on-response='handleResponse'
               headers='{{headers}}'>
             </iron-ajax>
-            <template is="dom-repeat" items={{members}}>
-              <congress-member key="{{item.id}}"></congress-member>
+            <template is="dom-repeat" items={{congressmembers}}>
+              <congress-member key="{{item.id}}">{{item.id}}</congress-member>
             </template>
           </div>
         </paper-toolbar>
@@ -60,9 +60,11 @@ Polymer({
   handleResponse: function(request) {
     data = (request.detail.response).results;
     members = data[0].members;
-    this.members = members;
-    return members;
-	}
+    this.congressmembers = members;
+  },
+  attached: function() {
+    this.$.congressmembers.generateRequest();
+  }
 })
 </script>
 
