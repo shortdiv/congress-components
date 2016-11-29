@@ -28,7 +28,7 @@ Polymer({
   properties: {
     firstName: {
       type: String,
-      value: ''
+      value: 'empty'
     },
     lastName: {
       type: String,
@@ -44,6 +44,10 @@ Polymer({
     }
   },
   attached: function() {
+    this.data
+  },
+  change: function() {
+    console.log('change!')
   }
 })
 </script>

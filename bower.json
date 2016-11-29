@@ -17,6 +17,7 @@
     "iron-ajax": "PolymerElements/iron-ajax#^1.4.3"
   },
   "devDependencies": {
-    "paper-item": "^1.2.1"
+    "paper-item": "^1.2.1",
+    "paper-checkbox": "^1.4.2"
   }
 }

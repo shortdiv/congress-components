@@ -1,5 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link href="../bower_components/paper-checkbox/paper-checkbox.html" rel="import">
 <link rel="import" href="person.html">
 
 <dom-module id="congress-members">
@@ -27,19 +28,23 @@
       <paper-header-panel>
         <paper-toolbar>
           <paper-item>Congress Members</paper-item>
-          <div>
-            <iron-ajax auto
-              id="congressmembers"
-              url='https://api.propublica.org/congress/v1/114/senate/members.json'
-              method='GET'
-              on-response='handleResponse'
-              headers='{{headers}}'>
-            </iron-ajax>
-            <template is="dom-repeat" items={{congressmembers}}>
-              <congress-member data="{{item}}"></congress-member>
-            </template>
-          </div>
+          <paper-item> Filter By Party:
+            <paper-checkbox name="Republican">Republican</paper-checkbox>
+            <paper-checkbox name="Democrat" change="changeHandler">Democrat</paper-checkbox>
+          </paper-item>
         </paper-toolbar>
+        <div>
+          <iron-ajax auto
+            id="congressmembers"
+            url='https://api.propublica.org/congress/v1/114/senate/members.json'
+            method='GET'
+            on-response='handleResponse'
+            headers='{{headers}}'>
+          </iron-ajax>
+          <template is="dom-repeat" items={{congressmembers}}>
+            <congress-member data="{{item}}"></congress-member>
+          </template>
+        </div>
       </paper-header-panel>
     </paper-drawer-panel>
   </template>
@@ -55,6 +60,10 @@ Polymer({
     congressmembers: {
       type: Array,
       value: []
+    },
+    data: {
+      type: Array,
+      notify: true
     }
   },
   handleResponse: function(request) {
@@ -64,6 +73,9 @@ Polymer({
   },
   attached: function() {
     this.$.congressmembers.generateRequest();
+  },
+  changeHandler: function() {
+    console.log('hello')
   }
 })
 </script>
