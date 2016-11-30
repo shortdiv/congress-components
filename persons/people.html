@@ -29,8 +29,8 @@
         <paper-toolbar>
           <paper-item>Congress Members</paper-item>
           <paper-item> Filter By Party:
-            <paper-checkbox name="Republican">Republican</paper-checkbox>
-            <paper-checkbox name="Democrat" change="changeHandler">Democrat</paper-checkbox>
+            <paper-checkbox id="republican" on-change="changeHandler">Republican</paper-checkbox>
+            <paper-checkbox id="democrat">Democrat</paper-checkbox>
           </paper-item>
         </paper-toolbar>
         <div>
@@ -41,8 +41,8 @@
             on-response='handleResponse'
             headers='{{headers}}'>
           </iron-ajax>
-          <template is="dom-repeat" items={{congressmembers}}>
-            <congress-member data="{{item}}"></congress-member>
+          <template is="dom-repeat" items={{congressmembers}} filter={{computeFilter(isRepublican)}} as="congressmember">
+            <congress-member bio="{{congressmember}}"></congress-member>
           </template>
         </div>
       </paper-header-panel>
@@ -64,6 +64,10 @@ Polymer({
     data: {
       type: Array,
       notify: true
+    },
+    isRepublican: {
+      type: Boolean,
+      value: false
     }
   },
   handleResponse: function(request) {
@@ -75,7 +79,17 @@ Polymer({
     this.$.congressmembers.generateRequest();
   },
   changeHandler: function() {
+    this.isRepublican = this.$.republican.checked
     console.log('hello')
+  },
+  computeFilter: function(bool) {
+    if(!bool) {
+      return null;
+    } else {
+      return function(congressmember) {
+        return congressmember.party == 'R'
+      }
+    }
   }
 })
 </script>
