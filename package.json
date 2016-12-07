@@ -1,0 +1,28 @@
+{
+  "name": "congress-as-components",
+  "version": "1.0.0",
+  "description": "A proof of concept for Google Polymer using the Congress API",
+  "main": "index.js",
+  "dependencies": {
+    "webpack": "^1.13.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shortdiv/congress-components.git"
+  },
+  "keywords": [
+    "congress",
+    "polymer",
+    "web components"
+  ],
+  "author": "Divya Sasidharan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shortdiv/congress-components/issues"
+  },
+  "homepage": "https://github.com/shortdiv/congress-components#readme"
+}
