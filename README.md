@@ -1,5 +1,5 @@
 ## Installation
-This project uses a gulp build process. To install, run:
+This project works with both gulp and polymer cli. I recommend using the gulp build as it has vulcanize and various other optimizations built into it. To install, run:
 
 ```
 npm i -g bower && vulcanize && gulp
@@ -15,4 +15,10 @@ To serve up the polymer app locally run:
 
 ```
 npm run start
+```
+
+Alternative, if you'd rather use polymer-cli, run:
+
+```
+polymer serve
 ```
