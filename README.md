@@ -1,18 +1,18 @@
 ## Installation
-This project uses polymer cli. To install, run:
+This project uses a gulp build process. To install, run:
 
 ```
-npm i -g bower && polymer-cli
+npm i -g bower && vulcanize && gulp
 ```
 
 Install dependencies by running:
 ```
-bower install
+bower install && npm install
 ```
 ## To run polymer locally
 
 To serve up the polymer app locally run:
 
 ```
-polymer serve
+npm run start
 ```

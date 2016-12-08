@@ -28,7 +28,6 @@ Polymer({
   },
   changeHandler: function() {
     this.isRepublican = this.$.republican.checked
-    console.log('hello')
   },
   computeFilter: function(bool) {
     if(!bool) {
