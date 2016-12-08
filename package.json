@@ -4,25 +4,27 @@
   "description": "A proof of concept for Google Polymer using the Congress API",
   "main": "index.js",
   "dependencies": {
-    "webpack": "^1.13.3"
+    "gulp": "^3.9.1",
+    "vulcanize": "^1.14.12"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "dotenv": "^2.0.0",
+    "fs-extra": "^1.0.0",
+    "gulp-run-sequence": "^0.3.2",
+    "gulp-vulcanize": "^6.1.0",
+    "live-server": "^1.1.0",
+    "rimraf": "^2.5.4"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm run clean && npm run vulcanize && npm run serve",
+    "clean": "rimraf dist/",
+    "vulcanize": "gulp",
+    "serve": "node tasks/server"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/shortdiv/congress-components.git"
   },
-  "keywords": [
-    "congress",
-    "polymer",
-    "web components"
-  ],
   "author": "Divya Sasidharan",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/shortdiv/congress-components/issues"
-  },
-  "homepage": "https://github.com/shortdiv/congress-components#readme"
+  "license": "ISC"
 }
